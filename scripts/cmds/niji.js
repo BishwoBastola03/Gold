@@ -1,12 +1,15 @@
 const axios = require("axios");
 const { getStreamFromURL } = global.utils;
 
+/*Do not change
+        the credit 🐢👑*/
+
 module.exports = {
     config: {
-        name: "nijix",
-        aliases: ["nijijourneyx"],
+        name: "niji",
+        aliases: ["nijijourney"],
         version: "1.0",
-        author: "SiAM | Turtle APIs",
+        author: "SiAM | Rehat86",
         countDown: 5,
         role: 0,
         longDescription: "Text to Image",
@@ -35,28 +38,27 @@ module.exports = {
                 message.reply("Please provide a prompt or reply to an image.");
                 return;
             }
-
+            
             if (args.length > 0) {
                 prompt = args.join(" ");
             }
 
-
-            let apiUrl = `https://project-niji.onrender.com/api/generate?prompt=${encodeURIComponent(prompt)}.&aspectRatio=${aspectRatio}&apikey=rehat&key=siam`;
+            
+            let apiUrl = `   https://niji-rouge.vercel.app/generate?prompt=${encodeURIComponent(prompt)}.&aspectRatio=${aspectRatio}&apikey=rehat`;
             if (imageUrl) {
                 apiUrl += `&imageUrl=${imageUrl}`;
             }
 
-            const processingMessage = await message.reply("⛵ Initiating request");
+            const processingMessage = await message.reply("Please wait...⏳");
             message.reaction("⏳", event.messageID);
 
             const response = await axios.post(apiUrl);
             const img = response.data.url;
 
-            const downloadLink = `Your Imagination Is Created 🌟\nDownload: ${img}`;
             await message.reply({
-                body: downloadLink,
                 attachment: await getStreamFromURL(img)
             });
+
             message.unsend(processingMessage.messageID);
             await message.reaction("✅", event.messageID);
         } catch (error) {
